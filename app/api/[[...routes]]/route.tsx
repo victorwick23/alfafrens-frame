@@ -6,8 +6,14 @@ import { neynar } from "frog/hubs";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
 import { Box, Heading, Text, HStack, VStack, vars, Image } from "./ui";
+// import { neynar } from "frog/middlewares";
 
 const neynarApiKey = process.env.NEXT_NEYNAR_API_KEY || "default_api_key";
+
+// const neynarMiddleware = neynar({
+//   apiKey: neynarApiKey,
+//   features: ["interactor", "cast"],
+// });
 
 const app = new Frog({
   assetsPath: "/",
@@ -22,48 +28,86 @@ const app = new Frog({
 // export const runtime = 'edge'
 
 app.frame("/", (c) => {
-  console.log(neynarApiKey, "Neynarr APII");
-  const { buttonValue, inputText, status } = c;
+  const { buttonValue, inputText, status, frameData, verified } = c;
   const fruit = inputText || buttonValue;
-  return c.res({
-    action: "/result",
-    image: (
-      <div
-        style={{
-          alignItems: "center",
-          background: "black",
-          backgroundSize: "100% 100%",
-          display: "flex",
-          flexDirection: "column",
-          flexWrap: "nowrap",
-          height: "100%",
-          justifyContent: "center",
-          textAlign: "center",
-          width: "100%",
-        }}
-      >
+  // console.log(frameData, "COk");
+  // console.log(verified, "cuk");
+
+  if (!verified) {
+    return c.res({
+      image: (
         <div
           style={{
-            color: "white",
-            fontSize: 60,
-            fontStyle: "normal",
-            letterSpacing: "-0.025em",
-            lineHeight: 1.4,
-            marginTop: 30,
-            padding: "0 120px",
-            whiteSpace: "pre-wrap",
+            alignItems: "center",
+            background: "black",
+            backgroundSize: "100% 100%",
+            display: "flex",
+            flexDirection: "column",
+            flexWrap: "nowrap",
+            height: "100%",
+            justifyContent: "center",
+            textAlign: "center",
+            width: "100%",
           }}
         >
-          Choose your weapon
+          <div
+            style={{
+              color: "white",
+              fontSize: 60,
+              fontStyle: "normal",
+              letterSpacing: "-0.025em",
+              lineHeight: 1.4,
+              marginTop: 30,
+              padding: "0 120px",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            Frame Failed Verified
+          </div>
         </div>
-      </div>
-    ),
-    intents: [
-      <Button value="rock">Rock</Button>,
-      <Button value="paper">Paper</Button>,
-      <Button value="scissors">Scissors</Button>,
-    ],
-  });
+      ),
+    });
+  } else {
+    return c.res({
+      action: "/result",
+      image: (
+        <div
+          style={{
+            alignItems: "center",
+            background: "black",
+            backgroundSize: "100% 100%",
+            display: "flex",
+            flexDirection: "column",
+            flexWrap: "nowrap",
+            height: "100%",
+            justifyContent: "center",
+            textAlign: "center",
+            width: "100%",
+          }}
+        >
+          <div
+            style={{
+              color: "white",
+              fontSize: 60,
+              fontStyle: "normal",
+              letterSpacing: "-0.025em",
+              lineHeight: 1.4,
+              marginTop: 30,
+              padding: "0 120px",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            Choose your weapon
+          </div>
+        </div>
+      ),
+      intents: [
+        <Button value="rock">Rock</Button>,
+        <Button value="paper">Paper</Button>,
+        <Button value="scissors">Scissors</Button>,
+      ],
+    });
+  }
 });
 
 app.frame("/result", (c) => {
