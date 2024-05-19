@@ -25,11 +25,7 @@ const app = new Frog({
   ui: { vars },
   // Supply a Hub to enable frame verification.
   hub: neynar.hub(),
-}).use(
-  neynar.middleware({
-    features: ["interactor", "cast"],
-  })
-);
+}).use(neynar.middleware({ features: ["interactor", "cast"] }));
 
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
