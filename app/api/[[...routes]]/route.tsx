@@ -82,12 +82,6 @@ app.frame("/", (c) => {
 });
 
 app.frame("/result", (c) => {
-  const { frameData, verified } = c;
-
-  console.log(frameData, "this is frameData");
-  console.log(verified, "this is Verified");
-
-  const { displayName } = c.var.interactor || {};
   const rand = Math.floor(Math.random() * 3);
   const choices = ["rock", "paper", "scissors"];
   const userChoice = choices[(c.buttonIndex || 1) - 1];
@@ -158,9 +152,8 @@ app.frame("/result", (c) => {
             whiteSpace: "pre-wrap",
           }}
         >
+          {c.var.interactor?.displayName}
           {msg}
-          <p>Your Such a Loser </p>
-          {displayName}
         </div>
       </div>
     ),
