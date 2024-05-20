@@ -106,10 +106,7 @@ app.frame("/result", (c) => {
 
   return c.res({
     image: (
-      <div style={{ color: "white", display: "flex", fontSize: 60 }}>
-        {msg}
-        {c.var.interactor?.displayName}
-      </div>
+      <div style={{ color: "white", display: "flex", fontSize: 60 }}>{msg}</div>
     ),
     intents: [<Button action="/">Play again</Button>],
   });
